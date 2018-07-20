@@ -1,0 +1,26 @@
+{
+  "name": "b9-hyperledger",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_PATH=src/ react-scripts start",
+    "build": "NODE_PATH=src/ react-scripts build",
+    "test": "NODE_PATH=src/ react-scripts test --env=jsdom",
+    "eject": "NODE_PATH=src/ react-scripts eject"
+  },
+  "repository": "git+https://github.com/kiro112/hyperledger101.git",
+  "author": "Jairo Malanay <jairo.malanay@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kiro112/hyperledger101/issues"
+  },
+  "homepage": "https://github.com/kiro112/hyperledger101#readme",
+  "dependencies": {
+    "@getable/lato": "^1.0.1",
+    "react": "^16.4.1",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.4.1",
+    "react-router-dom": "^4.3.1"
+  }
+}
