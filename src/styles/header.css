@@ -1,4 +1,12 @@
 
+.header-title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #565656;
+    font-weight: 900;
+    font-size: 20pt;
+}
+
 .header-container {
     background-color: rgb(222, 113, 80);
 }
@@ -33,7 +41,6 @@
 
 .header-nav-link {
     color: rgb(51, 51, 51);
-    font-family: lato;
     font-weight: bold;
     text-transform: uppercase;
     font-size: 18px;
@@ -42,3 +49,4 @@
 .header-nav-link:hover {
     color: rgb(222, 113, 80);
 }
+

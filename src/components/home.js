@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'reactstrap';
 
+import '../styles/home.css'
 
 class Home extends Component {
 
     render () {
         return (
-            <Grid>
-                <Row>
-                    <Col md={8} >
-                        <h1 class="info-headline" id="welcome-and-thanks-for-joining-this-course-">Welcome and thanks for joining this course!</h1>
+            <Container>
+                <Row className="bordered">
+                    <Col md={8} className="home-content">
+                        <h1 className="info-headline" id="welcome-and-thanks-for-joining-this-course-">Welcome and thanks for joining this course!</h1>
                         <p>We hope you are as excited as we are! In weeks ahead you will become familiar with one of today’s most relevant managed blockchains. In this in depth course about Hyperledger Fabric we will work together on different aspects of blockchain technology and Hyperledger Fabric in particular. You will learn how Hyperledger Fabric works and how YOU can work with it! b9lab has invested a lot of time digging into blockchain and its recent developments. Due to its significant progress, the decision to create a course about Hyperledger Fabric was clear. We are excited to guide you through one of the most promising and fascinating managed blockchains!</p>
 
-                        <h1 class="info-headline" id="course-duration-and-delivery">
+                        <h1 className="info-headline" id="course-duration-and-delivery">
                             Course Duration &amp; Delivery
                         </h1>
                         
@@ -47,7 +48,7 @@ class Home extends Component {
                             />
                         </p>
 
-                        <h1 class="info-headline" id="support-and-communication">
+                        <h1 className="info-headline" id="support-and-communication">
                             Teaching &amp; Communication
                         </h1>
                         <p>
@@ -66,7 +67,7 @@ class Home extends Component {
                         />
 
                         <p>
-                            <h1 class="info-headline" id="exam-and-certification">
+                            <h1 className="info-headline" id="exam-and-certification">
                                 Exam &amp; Certification
                             </h1>
                             <p>All the courseware is part of the exam (except further reading).</p>
@@ -90,9 +91,9 @@ class Home extends Component {
                         </p>
                     </Col>
 
-                    <Col md={4}>
-                        <section aria-label="Handout Navigation" class="handouts">
-                            <h1 class="handouts-header">Course Curriculum</h1>
+                    <Col md={3} className="syllabus">
+                        <section aria-label="Handout Navigation" className="handouts">
+                            <h1 className="handouts-header">Course Curriculum</h1>
                             <h4>MODULE 1: What is Blockchain</h4>
                             <font size="-1">
                                 <ul>
@@ -176,7 +177,7 @@ class Home extends Component {
                         </section>
                     </Col>
                 </Row>
-            </Grid>
+            </Container>
         );
     }
 
