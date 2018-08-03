@@ -4,644 +4,158 @@ class Fundamentals extends Component {
 
     render () {
         return (
-            <div className="course-content">
+            <div>
                 <h2>Fundamentals</h2>
-
                 <h3>Public key cryptosystems</h3>
                 <p>Modern cryptographic systems leverage computer capabilities to make accessible the power of certain mathematical functions.</p>
-
                 <h4>Public / private key</h4>
                 <p>Such keys always come in pairs and offer various capabilities. Those capabilities are based on cryptographic mathematics. As their name suggest, the public key is meant to be distributed to whoever is relevant, while the private key is to be jealously guarded, akin to having your house address public, but keeping the key to your house private.</p>
-                <p>Let&#39;s have a look at examples, which you may know under the names:</p>
+                <p>Let's have a look at examples, which you may know under the names:</p>
                 <ul>
                     <li>RSA</li>
                     <li>PGP, GnuPG</li>
                 </ul>
-
-
                 <p>Example (Linux):</p>
-                <pre><code class='hljs sql'>
-                <br />// Create SECP256K1 private key with explicit parameters for backward compatibility
-                <br />$ openssl ecparam -name secp256k1 -genkey -noout -out secp256k1-key.pem -param_enc explicit
-                <br />
-                <br />// Create public key
-                <br />$ openssl ec -in secp256k1-key.pem -pubout -out secp256k1-key-pub.pem
-                <br />
-                <br />// Show public key
-                <br />$ openssl ec -in secp256k1-key-pub.pem -pubin -text -noout
-                <br />
-                <br />// Create RSA private key
-                <br />$ openssl genrsa -des3 -out rsa-key.pem 2048
-                <br />Generating RSA private key, 2048 bit long modulus
-                <br />.....................................................+++
-                <br />...........+++
-                <br />e is 65537 (0x10001)
-                <br />Enter pass phrase for rsa-key.pem:
-                <br />Verifying - Enter pass phrase for rsa-key.pem:
-                <br />
-                <br />// Create public key
-                <br />$ openssl rsa -in rsa-key.pem -outform PEM -pubout -out rsa-key-pub.pem
-                <br />
-                <br />Enter pass phrase for rsa-key.pem:
-                <br />writing RSA key
-                </code></pre>
-
+                <pre><code className="hljs ">{"\n"}// Create SECP256K1 private key with explicit parameters for backward compatibility{"\n"}$ openssl ecparam -name secp256k1 -genkey -noout -out secp256k1-key.pem -param_enc explicit{"\n"}// Create public key{"\n"}$ openssl ec -in secp256k1-key.pem -pubout -out secp256k1-key-pub.pem{"\n"}// Show public key{"\n"}$ openssl ec -in secp256k1-key-pub.pem -pubin -text -noout{"\n"}{"\n"}// Create RSA private key{"\n"}$ openssl genrsa -des3 -out rsa-key.pem 2048{"\n"}Generating RSA private key, 2048 bit long modulus{"\n"}.....................................................+++{"\n"}...........+++{"\n"}e is 65537 (0x10001){"\n"}Enter pass phrase for rsa-key.pem:{"\n"}Verifying - Enter pass phrase for rsa-key.pem:{"\n"}// Create public key{"\n"}$ openssl rsa -in rsa-key.pem -outform PEM -pubout -out rsa-key-pub.pem{"\n"}Enter pass phrase for rsa-key.pem:{"\n"}writing RSA key{"\n"}</code></pre>
                 <p>This is like a password that is used to encrypt your private key on disk. If the private key was not encrypted, it would be at greater risk of theft. Since you are just testing here, you can put nothing or a simple word. But remember that whenever you create keys in the future, you need to protect them with a proper password.</p>
                 <p>Note that you may need openssl version 1.0 or newer.</p>
-
                 <h4>Encrypt and decrypt</h4>
-                <p>Alice wants to send a message to Bob, and for Bob&#39;s eyes only:</p>
+                <p>Alice wants to send a message to Bob, and for Bob's eyes only:</p>
                 <ul>
                     <li>Bob gives Alice his public key</li>
-                    <li>Alice uses Bob&#39;s public key to encrypt the message</li>
+                    <li>Alice uses Bob's public key to encrypt the message</li>
                     <li>Alice sends Bob the encrypted message</li>
                     <li>Bob decrypts the message with his private key</li>
                 </ul>
                 <p><img src="https://s3-eu-west-1.amazonaws.com/b9-academy-assets/course-assets/HLF-0/keys-001.png" /></p>
-
                 <p>Example:</p>
-                <pre><code class='hljs bash'>
-                <br />// Encrypt file
-                <br />$ openssl pkeyutl -encrypt -pubin -inkey rsa-key-pub.pem -in helloworld.txt -out helloworld.enc
-                <br />
-                <br />// Decrypt file
-                <br />$ openssl pkeyutl -decrypt -inkey rsa-key.pem -in helloworld.enc -out helloworld2.txt
-                </code></pre>
-                <p>If you receive an error, try with <code class='hljs hl-inline'>openssl rsautl</code> instead.</p>
-
+                <pre><code className="hljs bash">{"\n"}// Encrypt file{"\n"}$ openssl pkeyutl -encrypt -pubin -inkey rsa-key-pub.pem -in helloworld.txt -out helloworld.enc{"\n"}// Decrypt file{"\n"}$ openssl pkeyutl -decrypt -inkey rsa-key.pem -in helloworld.enc -out helloworld2.txt{"\n"}</code></pre>
+                <p>If you receive an error, try with <code className="hljs hl-inline">openssl rsautl</code> instead.</p>
                 <h4>Sign and verify</h4>
-                <p>Alice wants to make sure that Bob&#39;s public announcement is indeed from Bob:</p>
-
+                <p>Alice wants to make sure that Bob's public announcement is indeed from Bob:</p>
                 <ul>
                     <li>Bob gives Alice his public key</li>
                     <li>Bob signs his announcement with his private key</li>
                     <li>Bob sends Alice his announcement and its signature</li>
-                    <li>Alice verifies the signature with Bob&#39;s public key</li>
+                    <li>Alice verifies the signature with Bob's public key</li>
                 </ul>
-
                 <p><img src="https://s3-eu-west-1.amazonaws.com/b9-academy-assets/course-assets/HLF-0/keys-002.png" /></p>
-
                 <p>Example:</p>
-                <pre><code class='hljs bash'>
-                      // Sign file hash
-                <br />$ openssl dgst -sha256 -sign secp256k1-key.pem -out helloworld-bin.sha256 helloworld.txt
-                <br />
-                <br />// Encode signature in Base64
-                <br />$ openssl base64 -in helloworld-bin.sha256 -out helloworld.sha256
-                <br />
-                <br />// Decode signature form Base64
-                <br />$ openssl base64 -d -in helloworld.sha256 -out helloworld-bin-decoded.sha256
-                <br />
-                <br />// Verify signature
-                <br />$ openssl dgst -sha256 -verify secp256k1-key-pub.pem -signature helloworld-bin-decoded.sha256 helloworld.txt
-                <br />Verified OK
-                </code></pre>
-
+                <pre><code className="hljs bash">{"\n"}// Sign file hash{"\n"}$ openssl dgst -sha256 -sign secp256k1-key.pem -out helloworld-bin.sha256 helloworld.txt{"\n"}// Encode signature in Base64{"\n"}$ openssl base64 -in helloworld-bin.sha256 -out helloworld.sha256{"\n"}{"\n"}// Decode signature form Base64{"\n"}$ openssl base64 -d -in helloworld.sha256 -out helloworld-bin-decoded.sha256{"\n"}// Verify signature{"\n"}$ openssl dgst -sha256 -verify secp256k1-key-pub.pem -signature helloworld-bin-decoded.sha256 helloworld.txt{"\n"}Verified OK{"\n"}</code></pre>
                 <h4>Mix and match</h4>
-                <p>It is possible to mix both ideas, whereby Alice encrypts her message with Bob&#39;s public key, then signs the encrypt file with her private key. Upon reception, Bob verifies the signature with Alice&#39;s public key, then decrypts the file with his private key.</p>
+                <p>It is possible to mix both ideas, whereby Alice encrypts her message with Bob's public key, then signs the encrypt file with her private key. Upon reception, Bob verifies the signature with Alice's public key, then decrypts the file with his private key.</p>
                 <p><img src="https://s3-eu-west-1.amazonaws.com/b9-academy-assets/course-assets/HLF-0/keys-003.png" /></p>
-
                 <h3>Key management, PKI</h3>
-                <p>If you look again at the Alice and Bob examples, you will notice that there is a vulnerability in &quot;Bob gives Alice his public key&quot;. A malicious Charlie could intercept Bob&#39;s public key and pass on his own public key to Alice.
+                <p>If you look again at the Alice and Bob examples, you will notice that there is a vulnerability in "Bob gives Alice his public key". A malicious Charlie could intercept Bob's public key and pass on his own public key to Alice.
                 Key management and public key infrastructure (PKI) is an important aspect of cryptography that helps mitigate this risk.</p>
-
                 <h3>Theory</h3>
-
                 <h4>RSA</h4>
                 <p>RSA(Rives, Shamir, Adleman) is a public-key cryptosystem that was first published in 1977.</p>
-                <p>The premise is that if you have a public key 
-                    <span className="katex">
-                        <span className="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mo>(</mo>
-                                        <mi>p</mi>
-                                        <mi>u</mi>
-                                        <mi>b</mi>
-                                        <mi>K</mi>
-                                        <mi>e</mi>
-                                        <mi>y</mi>
-                                        <mo separator="true">,</mo>
-                                        <mi>n</mi>
-                                        <mo>)</mo>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">(pubKey,n)</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span className="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height: '0.75em' }}></span>
-                            <span class="strut bottom" style={{ height: '1em', verticalAlign: '-0.25em' }}></span>
-                            <span class="base">
-                                <span class="mopen">(</span>
-                                <span class="mord mathit">p</span>
-                                <span class="mord mathit">u</span>
-                                <span class="mord mathit">b</span>
-                                <span class="mord mathit" style={{ marginRight:'0.07153em' }}>K</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>y</span>
-                                <span class="mpunct">,</span>
-                                <span class="mord mathit">n</span>
-                                <span class="mclose">)</span>
-                            </span>
-                        </span>
-                    </span> 
-                    <br />
-                    and a private key 
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mi>p</mi>
-                                        <mi>r</mi>
-                                        <mi>i</mi>
-                                        <mi>K</mi>
-                                        <mi>e</mi>
-                                        <mi>y</mi>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">priKey</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height:"0.68333em"}}></span>
-                            <span class="strut bottom" style={{ height:"0.8777699999999999em", "vertical-align":"-0.19444em" }}></span>
-                            <span class="base">
-                                <span class="mord mathit">p</span>
-                                <span class="mord mathit" style={{ marginRight: '0.02778em' }}>r</span>
-                                <span class="mord mathit">i</span>
-                                <span class="mord mathit" style={{ marginRight: '0.07153em' }}>K</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>y</span>
-                            </span>
-                        </span>
-                    </span> then you can:
-                </p>
-
+                <p>The premise is that if you have a public key <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo separator="true">,</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(pubKey,n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mpunct">,</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span> and a private key <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">priKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span> then you can:</p>
                 <ul>
                     <li>encrypt a message with the following:</li>
                 </ul>
-
-                <p>
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mi>m</mi>
-                                        <mi>e</mi>
-                                        <mi>s</mi>
-                                        <mi>s</mi>
-                                        <mi>a</mi>
-                                        <mi>g</mi>
-                                        <msup>
-                                            <mi>e</mi>
-                                            <mrow>
-                                                <mi>p</mi>
-                                                <mi>u</mi>
-                                                <mi>b</mi>
-                                                <mi>K</mi>
-                                                <mi>e</mi>
-                                                <mi>y</mi>
-                                            </mrow>
-                                        </msup>
-                                        <mo>≡</mo>
-                                        <mi>e</mi>
-                                        <mi>n</mi>
-                                        <mi>c</mi>
-                                        <mi>M</mi>
-                                        <mi>e</mi>
-                                        <mi>s</mi>
-                                        <mi>s</mi>
-                                        <mi>a</mi>
-                                        <mi>g</mi>
-                                        <mi>e</mi>
-                                        <mo>
-                                            <mo>mod</mo>
-                                            <mspace width="0.333333em"></mspace>
-                                            <mi>n</mi>
-                                        </mo>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">message ^{`{pubKey}`} \equiv encMessage \mod n</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height:'0.8491079999999999em' }}></span>
-                            <span class="strut bottom" style={{ height:'1.043548em', verticalAlign:'-0.19444em' }}></span>
-                            <span class="base">
-                                <span class="mord mathit">m</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">a</span>
-                                <span class="mord mathit" style={{ marginRight:'0.03588em' }}>g</span>
-                                <span class="mord">
-                                    <span class="mord mathit">e</span>
-                                    <span class="msupsub">
-                                        <span class="vlist-t">
-                                            <span class="vlist-r">
-                                                <span class="vlist" style={{ height:'0.8491079999999999em' }}>
-                                                    <span style={{ top:'-3.063em', 'marginRight': '0.05em' }}>
-                                                        <span class="pstrut" style={{ height: '2.7em' }}></span>
-                                                        <span class="sizing reset-size6 size3 mtight">
-                                                            <span class="mord mtight">
-                                                                <span class="mord mathit mtight">p</span>
-                                                                <span class="mord mathit mtight">u</span>
-                                                                <span class="mord mathit mtight">b</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight: '0.07153em' }}>K</span>
-                                                                <span class="mord mathit mtight">e</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight: '0.03588em' }}>y</span>
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="mrel">≡</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">n</span>
-                                <span class="mord mathit">c</span>
-                                <span class="mord mathit" style={{ marginRight: '0.10903em' }}>M</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">a</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>g</span>
-                                <span class="mord mathit">e</span>
-                                <span>
-                                    <span class="mspace twelvemuspace"></span>m
-                                </span>
-                                od
-                                <span class="mord mathit">
-                                    <span class="mspace sixmuspace"></span>
-                                    <span class="mord mathit">n</span>
-                                </span>
-                            </span>
-                        </span>
-                    </span>
-                </p>
-
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><mo>≡</mo><mi>e</mi><mi>n</mi><mi>c</mi><mi>M</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>n</mi></mo></mrow><annotation encoding="application/x-tex">message ^{'{'}pubKey{'}'} \equiv encMessage \mod n</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.043548em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">e</span><span className="mord mathit">n</span><span className="mord mathit">c</span><span className="mord mathit" style={{marginRight: '0.10903em'}}>M</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">n</span></span></span></span></span></p>
                 <ul>
                     <li>decrypt the encrypted message with the following:</li>
                 </ul>
-
-                <p>
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mi>e</mi>
-                                        <mi>n</mi>
-                                        <mi>c</mi>
-                                        <mi>M</mi>
-                                        <mi>e</mi>
-                                        <mi>s</mi>
-                                        <mi>s</mi>
-                                        <mi>a</mi>
-                                        <mi>g</mi>
-                                        <msup>
-                                            <mi>e</mi>
-                                            <mrow>
-                                                <mi>p</mi>
-                                                <mi>r</mi>
-                                                <mi>i</mi>
-                                                <mi>K</mi>
-                                                <mi>e</mi>
-                                                <mi>y</mi>
-                                            </mrow>
-                                        </msup>
-                                        <mo>≡</mo>
-                                        <mi>m</mi>
-                                        <mi>e</mi>
-                                        <mi>s</mi>
-                                        <mi>s</mi>
-                                        <mi>a</mi>
-                                        <mi>g</mi>
-                                        <mi>e</mi>
-                                        <mo>
-                                            <mo>mod</mo>
-                                            <mspace width="0.333333em"></mspace>
-                                            <mi>n</mi>
-                                        </mo>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">encMessage ^{`{priKey}`} \equiv  message \mod n</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height:'0.8413309999999999em' }}></span>
-                            <span class="strut bottom" style={{ height:'1.035771em', verticalAlign:'-0.19444em' }}></span>
-                            <span class="base">
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">n</span>
-                                <span class="mord mathit">c</span>
-                                <span class="mord mathit" style={{ marginRight: '0.10903em' }}>M</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">a</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>g</span>
-                                <span class="mord">
-                                    <span class="mord mathit">e</span>
-                                    <span class="msupsub">
-                                        <span class="vlist-t">
-                                            <span class="vlist-r">
-                                                <span class="vlist" style={{ height:'0.8413309999999999em' }}>
-                                                    <span style={{ top:'-3.063em', marginRight: '0.05em' }}>
-                                                        <span class="pstrut" style={{ height: '2.7em' }}></span>
-                                                        <span class="sizing reset-size6 size3 mtight">
-                                                            <span class="mord mtight">
-                                                                <span class="mord mathit mtight">p</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.02778em' }}>r</span>
-                                                                <span class="mord mathit mtight">i</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.07153em' }}>K</span>
-                                                                <span class="mord mathit mtight">e</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.03588em' }}>y</span>
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="mrel">≡</span>
-                                <span class="mord mathit">m</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">a</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>g</span>
-                                <span class="mord mathit">e</span>
-                                <span>
-                                    <span class="mspace twelvemuspace"></span>m
-                                </span>od
-                                <span class="mord mathit">
-                                    <span class="mspace sixmuspace"></span>
-                                    <span class="mord mathit">n</span>
-                                </span>
-                            </span>
-                        </span>
-                    </span>
-                </p>
-
-                <p>Or that in fact there exist 
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mo>(</mo>
-                                        <mi>p</mi>
-                                        <mi>r</mi>
-                                        <mi>i</mi>
-                                        <mi>K</mi>
-                                        <mi>e</mi>
-                                        <mi>y</mi>
-                                        <mo separator="true">,</mo>
-                                        <mi>p</mi>
-                                        <mi>u</mi>
-                                        <mi>b</mi>
-                                        <mi>K</mi>
-                                        <mi>e</mi>
-                                        <mi>y</mi>
-                                        <mo separator="true">,</mo>
-                                        <mi>n</mi>
-                                        <mo>)</mo>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">(priKey,pubKey,n)</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height: '0.75em' }}></span>
-                            <span class="strut bottom" style={{ height:'1em', verticalAlign: '-0.25em' }}></span>
-                            <span class="base">
-                                <span class="mopen">(</span>
-                                <span class="mord mathit">p</span>
-                                <span class="mord mathit" style={{ marginRight: '0.02778em' }}>r</span>
-                                <span class="mord mathit">i</span>
-                                <span class="mord mathit" style={{ marginRight: '0.07153em' }}>K</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>y</span>
-                                <span class="mpunct">,</span>
-                                <span class="mord mathit">p</span>
-                                <span class="mord mathit">u</span>
-                                <span class="mord mathit">b</span>
-                                <span class="mord mathit" style={{ marginRight: '0.07153em' }}>K</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>y</span>
-                                <span class="mpunct">,</span>
-                                <span class="mord mathit">n</span>
-                                <span class="mclose">)</span>
-                            </span>
-                        </span>
-                    </span> such that 
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mo>(</mo>
-                                        <mi>m</mi>
-                                        <mi>e</mi>
-                                        <mi>s</mi>
-                                        <mi>s</mi>
-                                        <mi>a</mi>
-                                        <mi>g</mi>
-                                        <msup>
-                                            <mi>e</mi>
-                                            <mrow>
-                                                <mi>p</mi>
-                                                <mi>u</mi>
-                                                <mi>b</mi>
-                                                <mi>K</mi>
-                                                <mi>e</mi>
-                                                <mi>y</mi>
-                                            </mrow>
-                                        </msup>
-                                        <msup>
-                                            <mo>)</mo>
-                                            <mrow>
-                                                <mi>p</mi>
-                                                <mi>r</mi>
-                                                <mi>i</mi>
-                                                <mi>K</mi>
-                                                <mi>e</mi>
-                                                <mi>y</mi>
-                                            </mrow>
-                                        </msup>
-                                        <mo>≡</mo>
-                                        <mi>m</mi>
-                                        <mi>e</mi>
-                                        <mi>s</mi>
-                                        <mi>s</mi>
-                                        <mi>a</mi>
-                                        <mi>g</mi>
-                                        <mi>e</mi>
-                                        <mo>
-                                            <mo>mod</mo>
-                                            <mspace width="0.333333em"></mspace>
-                                            <mi>n</mi>
-                                        </mo>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">(message ^{`{pubKey}`}) ^ {`{priKey}`} \equiv message \mod n</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height:'0.8491079999999999em' }}></span>
-                            <span class="strut bottom" style={{ height:'1.0991079999999998em', verticalAlign: '-0.25em' }}></span>
-                            <span class="base">
-                                <span class="mopen">(</span>
-                                <span class="mord mathit">m</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">a</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>g</span>
-                                <span class="mord">
-                                    <span class="mord mathit">e</span>
-                                    <span class="msupsub">
-                                        <span class="vlist-t">
-                                            <span class="vlist-r">
-                                                <span class="vlist" style={{ height: '0.8491079999999999em' }}>
-                                                    <span style={{ top:'-3.063em', marginRight: '0.05em' }}>
-                                                        <span class="pstrut" style={{ height: '2.7em' }}></span>
-                                                        <span class="sizing reset-size6 size3 mtight">
-                                                            <span class="mord mtight">
-                                                                <span class="mord mathit mtight">p</span>
-                                                                <span class="mord mathit mtight">u</span>
-                                                                <span class="mord mathit mtight">b</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight: '0.07153em' }}>K</span>
-                                                                <span class="mord mathit mtight">e</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.03588em' }}>y</span>
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="mclose">
-                                    <span class="mclose">)</span>
-                                    <span class="msupsub">
-                                        <span class="vlist-t">
-                                            <span class="vlist-r">
-                                                <span class="vlist" style={{ height: "0.8413309999999999em" }}>
-                                                    <span style={{ top:'-3.063em', marginRight: '0.05em' }}>
-                                                        <span class="pstrut" style={{ height: '2.7em' }}></span>
-                                                        <span class="sizing reset-size6 size3 mtight">
-                                                            <span class="mord mtight">
-                                                                <span class="mord mathit mtight">p</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.02778em' }}>r</span>
-                                                                <span class="mord mathit mtight">i</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.07153em' }}>K</span>
-                                                                <span class="mord mathit mtight">e</span>
-                                                                <span class="mord mathit mtight" style={{ marginRight:'0.03588em' }}>y</span>
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </span>
-                                            </span>
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="mrel">≡</span>
-                                <span class="mord mathit">m</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">s</span>
-                                <span class="mord mathit">a</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>g</span>
-                                <span class="mord mathit">e</span>
-                                <span> &nbsp;
-                                    <span class="mspace twelvemuspace"></span>m
-                                </span>od
-                                <span class="mord mathit">
-                                    <span class="mspace sixmuspace"></span>
-                                    <span class="mord mathit">n</span>
-                                </span>
-                            </span>
-                        </span>
-                    </span>, with the additional hurdle that calculating 
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mi>p</mi>
-                                        <mi>r</mi>
-                                        <mi>i</mi>
-                                        <mi>K</mi>
-                                        <mi>e</mi>
-                                        <mi>y</mi>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">priKey</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height: '0.68333em' }}></span>
-                            <span class="strut bottom" style={{ height:'0.8777699999999999em', verticalAlign:'-0.19444em' }}></span>
-                            <span class="base">
-                                <span class="mord mathit">p</span>
-                                <span class="mord mathit" style={{ marginRight:'0.02778em' }}>r</span>
-                                <span class="mord mathit">i</span>
-                                <span class="mord mathit" style={{ marginRight:'0.07153em' }}>K</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>y</span>
-                            </span>
-                        </span>
-                    </span> out of 
-                    <span class="katex">
-                        <span class="katex-mathml">
-                            <math>
-                                <semantics>
-                                    <mrow>
-                                        <mo>(</mo>
-                                        <mi>p</mi>
-                                        <mi>u</mi>
-                                        <mi>b</mi>
-                                        <mi>K</mi>
-                                        <mi>e</mi>
-                                        <mi>y</mi>
-                                        <mo separator="true">,</mo>
-                                        <mi>n</mi>
-                                        <mo>)</mo>
-                                    </mrow>
-                                    <annotation encoding="application/x-tex">(pubKey,n)</annotation>
-                                </semantics>
-                            </math>
-                        </span>
-                        <span class="katex-html" aria-hidden="true">
-                            <span class="strut" style={{ height:'0.75em' }}></span>
-                            <span class="strut bottom" style={{ height:'1em', verticalAlign:'-0.25em' }}></span>
-                            <span class="base">
-                                <span class="mopen">(</span>
-                                <span class="mord mathit">p</span>
-                                <span class="mord mathit">u</span>
-                                <span class="mord mathit">b</span>
-                                <span class="mord mathit" style={{ marginRight: '0.07153em' }}>K</span>
-                                <span class="mord mathit">e</span>
-                                <span class="mord mathit" style={{ marginRight: '0.03588em' }}>y</span>
-                                <span class="mpunct">,</span>
-                                <span class="mord mathit">n</span>
-                                <span class="mclose">)</span>
-                            </span>
-                        </span>
-                    </span> is computationally expensive and in practice impossible.
-                </p>
-            
-
-
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>e</mi><mi>n</mi><mi>c</mi><mi>M</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>n</mi></mo></mrow><annotation encoding="application/x-tex">encMessage ^{'{'}priKey{'}'} \equiv  message \mod n</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8413309999999999em'}} /><span className="strut bottom" style={{height: '1.035771em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">e</span><span className="mord mathit">n</span><span className="mord mathit">c</span><span className="mord mathit" style={{marginRight: '0.10903em'}}>M</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8413309999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">n</span></span></span></span></span></p>
+                <p>Or that in fact there exist <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo separator="true">,</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo separator="true">,</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(priKey,pubKey,n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mpunct">,</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mpunct">,</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span> such that <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><msup><mo>)</mo><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>n</mi></mo></mrow><annotation encoding="application/x-tex">(message ^{'{'}pubKey{'}'}) ^ {'{'}priKey{'}'} \equiv message \mod n</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.0991079999999998em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mclose"><span className="mclose">)</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8413309999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">n</span></span></span></span></span>, with the additional hurdle that calculating <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">priKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span> out of <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo separator="true">,</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(pubKey,n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mpunct">,</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span> is computationally expensive and in practice impossible.</p>
+                <p>Let's work this in detail.</p>
+                <h4>How</h4>
+                <p>How to calculate a <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo separator="true">,</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(pubKey,n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mpunct">,</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span> and a <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">priKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span> ? </p>
+                <ul>
+                    <li>First we have to choose two prime numbers <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span></span></span></span>. Then we can calculate <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>(</mo><mi>p</mi><mo separator="true">,</mo><mi>q</mi><mo>)</mo><mo>=</mo><mi>p</mi><mo>⋅</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">n(p,q)=p \cdot q</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">n</span><span className="mopen">(</span><span className="mord mathit">p</span><span className="mpunct">,</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span><span className="mclose">)</span><span className="mrel">=</span><span className="mord mathit">p</span><span className="mbin">⋅</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span></span></span></span>.</li>
+                    <li>After that, we calculate Euler's totient function </li>
+                </ul>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>(</mo><mi>p</mi><mo separator="true">,</mo><mi>q</mi><mo>)</mo><mo>)</mo><mo>=</mo><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>⋅</mo><mo>(</mo><mi>q</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(n(p,q))= (p-1)\cdot(q-1)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mopen">(</span><span className="mord mathit">p</span><span className="mpunct">,</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span><span className="mclose">)</span><span className="mclose">)</span><span className="mrel">=</span><span className="mopen">(</span><span className="mord mathit">p</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mclose">)</span><span className="mbin">⋅</span><span className="mopen">(</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mclose">)</span></span></span></span> only if p and q are prime numbers. Otherwise, it is a NP problem.</p>
+                <ul>
+                    <li>Now we can use a random <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">pubKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.69444em'}} /><span className="strut bottom" style={{height: '0.8888799999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span>, which is not a divisor of <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span> and is smaller than <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span>.</li>
+                </ul>
+                <p>Calculating <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">priKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span> means calculating <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.69444em'}} /><span className="strut bottom" style={{height: '0.69444em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathit">b</span></span></span></span> in following equation:</p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>a</mi><mo>⋅</mo><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>+</mo><mi>b</mi><mo>⋅</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a \cdot \phi(n)+b \cdot pubKey=1</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">a</span><span className="mbin">⋅</span><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span><span className="mbin">+</span><span className="mord mathit">b</span><span className="mbin">⋅</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">=</span><span className="mord mathrm">1</span></span></span></span></p>
+                <p>Where we can use the extended euclidean algorithm. Now we can delete <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mo separator="true">,</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">p,q</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mpunct">,</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span>.</p>
+                <h4>Example</h4>
+                <p>Let's have a look on an example. </p>
+                <ul>
+                    <li>We use <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mo>=</mo><mn>2</mn><mn>3</mn><mn>9</mn><mn>9</mn></mrow><annotation encoding="application/x-tex">p=2399</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.8388800000000001em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mrel">=</span><span className="mord mathrm">2</span><span className="mord mathrm">3</span><span className="mord mathrm">9</span><span className="mord mathrm">9</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>q</mi><mo>=</mo><mn>2</mn><mn>6</mn><mn>3</mn><mn>7</mn><mn>1</mn></mrow><annotation encoding="application/x-tex">q=26371</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.8388800000000001em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span><span className="mrel">=</span><span className="mord mathrm">2</span><span className="mord mathrm">6</span><span className="mord mathrm">3</span><span className="mord mathrm">7</span><span className="mord mathrm">1</span></span></span></span>, which are prime numbers.
+                        Then we have <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>n</mi><mo>=</mo><mn>6</mn><mn>3</mn><mn>2</mn><mn>6</mn><mn>4</mn><mn>0</mn><mn>2</mn><mn>9</mn></mrow><annotation encoding="application/x-tex">n=63264029</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.64444em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathit">n</span><span className="mrel">=</span><span className="mord mathrm">6</span><span className="mord mathrm">3</span><span className="mord mathrm">2</span><span className="mord mathrm">6</span><span className="mord mathrm">4</span><span className="mord mathrm">0</span><span className="mord mathrm">2</span><span className="mord mathrm">9</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>6</mn><mn>3</mn><mn>2</mn><mn>3</mn><mn>5</mn><mn>2</mn><mn>6</mn><mn>0</mn></mrow><annotation encoding="application/x-tex">\phi(n)= 63235260</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span><span className="mrel">=</span><span className="mord mathrm">6</span><span className="mord mathrm">3</span><span className="mord mathrm">2</span><span className="mord mathrm">3</span><span className="mord mathrm">5</span><span className="mord mathrm">2</span><span className="mord mathrm">6</span><span className="mord mathrm">0</span></span></span></span>.</li>
+                    <li>Now, we have to set a <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>&lt;</mo><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">pubKey&lt; \phi(n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">&lt;</span><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span>. So we use <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>=</mo><mn>5</mn><mn>4</mn><mn>8</mn><mn>3</mn><mn>3</mn></mrow><annotation encoding="application/x-tex">pubKey=54833</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.69444em'}} /><span className="strut bottom" style={{height: '0.8888799999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">=</span><span className="mord mathrm">5</span><span className="mord mathrm">4</span><span className="mord mathrm">8</span><span className="mord mathrm">3</span><span className="mord mathrm">3</span></span></span></span>.</li>
+                    <li>That gives us with extended euclid a <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>=</mo><mn>6</mn><mn>5</mn><mn>8</mn><mn>9</mn><mn>5</mn><mn>7</mn><mn>7</mn></mrow><annotation encoding="application/x-tex">priKey=6589577</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">=</span><span className="mord mathrm">6</span><span className="mord mathrm">5</span><span className="mord mathrm">8</span><span className="mord mathrm">9</span><span className="mord mathrm">5</span><span className="mord mathrm">7</span><span className="mord mathrm">7</span></span></span></span></li>
+                </ul>
+                <p>Now we delete <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mo separator="true">,</mo><mi>q</mi></mrow><annotation encoding="application/x-tex">p,q</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mpunct">,</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span>. If we want to encrypt the <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>=</mo><mn>9</mn><mn>8</mn><mn>7</mn><mn>4</mn><mn>5</mn><mn>8</mn><mn>7</mn></mrow><annotation encoding="application/x-tex">message=9874587</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.8388800000000001em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mrel">=</span><span className="mord mathrm">9</span><span className="mord mathrm">8</span><span className="mord mathrm">7</span><span className="mord mathrm">4</span><span className="mord mathrm">5</span><span className="mord mathrm">8</span><span className="mord mathrm">7</span></span></span></span> we get:</p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mn>9</mn><mn>8</mn><mn>7</mn><mn>4</mn><mn>5</mn><mn>8</mn><msup><mn>7</mn><mrow><mn>5</mn><mn>4</mn><mn>8</mn><mn>3</mn><mn>3</mn></mrow></msup><mo>≡</mo><mn>3</mn><mn>6</mn><mn>8</mn><mn>9</mn><mn>8</mn><mn>1</mn><mn>0</mn><mn>7</mn><mo><mo>mod</mo><mspace width="0.333333em" /><mn>6</mn></mo><mn>3</mn><mn>2</mn><mn>6</mn><mn>4</mn><mn>0</mn><mn>2</mn><mn>9</mn></mrow><annotation encoding="application/x-tex">9874587^{'{'}54833{'}'} \equiv 36898107 \mod 63264029 </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8141079999999999em'}} /><span className="strut bottom" style={{height: '0.8141079999999999em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathrm">9</span><span className="mord mathrm">8</span><span className="mord mathrm">7</span><span className="mord mathrm">4</span><span className="mord mathrm">5</span><span className="mord mathrm">8</span><span className="mord"><span className="mord mathrm">7</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8141079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathrm mtight">5</span><span className="mord mathrm mtight">4</span><span className="mord mathrm mtight">8</span><span className="mord mathrm mtight">3</span><span className="mord mathrm mtight">3</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathrm">3</span><span className="mord mathrm">6</span><span className="mord mathrm">8</span><span className="mord mathrm">9</span><span className="mord mathrm">8</span><span className="mord mathrm">1</span><span className="mord mathrm">0</span><span className="mord mathrm">7</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathrm"><span className="mspace sixmuspace" /><span className="mord mathrm">6</span></span><span className="mord mathrm">3</span><span className="mord mathrm">2</span><span className="mord mathrm">6</span><span className="mord mathrm">4</span><span className="mord mathrm">0</span><span className="mord mathrm">2</span><span className="mord mathrm">9</span></span></span></span></p>
+                <p>If you have the <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">priKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span>, then you can calculate the message:
+                <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mn>3</mn><mn>6</mn><mn>8</mn><mn>9</mn><mn>8</mn><mn>1</mn><mn>0</mn><msup><mn>7</mn><mrow><mn>6</mn><mn>5</mn><mn>8</mn><mn>9</mn><mn>5</mn><mn>7</mn><mn>7</mn></mrow></msup><mo>≡</mo><mn>9</mn><mn>8</mn><mn>7</mn><mn>4</mn><mn>5</mn><mn>8</mn><mn>7</mn><mo><mo>mod</mo><mspace width="0.333333em" /><mn>6</mn></mo><mn>3</mn><mn>2</mn><mn>6</mn><mn>4</mn><mn>0</mn><mn>2</mn><mn>9</mn></mrow><annotation encoding="application/x-tex">36898107^{'{'}6589577{'}'} \equiv 9874587 \mod 63264029</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8141079999999999em'}} /><span className="strut bottom" style={{height: '0.8141079999999999em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathrm">3</span><span className="mord mathrm">6</span><span className="mord mathrm">8</span><span className="mord mathrm">9</span><span className="mord mathrm">8</span><span className="mord mathrm">1</span><span className="mord mathrm">0</span><span className="mord"><span className="mord mathrm">7</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8141079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathrm mtight">6</span><span className="mord mathrm mtight">5</span><span className="mord mathrm mtight">8</span><span className="mord mathrm mtight">9</span><span className="mord mathrm mtight">5</span><span className="mord mathrm mtight">7</span><span className="mord mathrm mtight">7</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathrm">9</span><span className="mord mathrm">8</span><span className="mord mathrm">7</span><span className="mord mathrm">4</span><span className="mord mathrm">5</span><span className="mord mathrm">8</span><span className="mord mathrm">7</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathrm"><span className="mspace sixmuspace" /><span className="mord mathrm">6</span></span><span className="mord mathrm">3</span><span className="mord mathrm">2</span><span className="mord mathrm">6</span><span className="mord mathrm">4</span><span className="mord mathrm">0</span><span className="mord mathrm">2</span><span className="mord mathrm">9</span></span></span></span></p>
+                
+                <h4>Why it works</h4>
+                <p>There is a proof with Fermat's little theorem, that <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><msup><mo>)</mo><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>n</mi></mo></mrow><annotation encoding="application/x-tex">(message ^ {'{'}pubKey{'}'}) ^ {'{'}priKey{'}'} \equiv message \mod n</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.0991079999999998em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mclose"><span className="mclose">)</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8413309999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">n</span></span></span></span></span> is true.</p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>a</mi><mo>⋅</mo><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>+</mo><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>⋅</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a \cdot \phi(n)+ priKey \cdot pubKey=1</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">a</span><span className="mbin">⋅</span><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span><span className="mbin">+</span><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mbin">⋅</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">=</span><span className="mord mathrm">1</span></span></span></span> means:</p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>⋅</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>≡</mo><mn>1</mn><mo><mo>mod</mo><mspace width="0.333333em" /><mi>ϕ</mi></mo><mo>(</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">priKey \cdot pubKey\equiv 1 \mod \phi(n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mbin">⋅</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">≡</span><span className="mord mathrm">1</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">ϕ</span></span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span></p>
+                <p>And because <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>ϕ</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>q</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\phi(n)=(p-1)(q-1)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">ϕ</span><span className="mopen">(</span><span className="mord mathit">n</span><span className="mclose">)</span><span className="mrel">=</span><span className="mopen">(</span><span className="mord mathit">p</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mclose">)</span><span className="mopen">(</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mclose">)</span></span></span></span>
+                It follows <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>⋅</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>−</mo><mn>1</mn><mo>=</mo><mi>h</mi><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo><mo>=</mo><mi>k</mi><mo>(</mo><mi>q</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">priKey \cdot pubKey-1=h(p-1)=k(q-1)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mbin">⋅</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mrel">=</span><span className="mord mathit">h</span><span className="mopen">(</span><span className="mord mathit">p</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mclose">)</span><span className="mrel">=</span><span className="mord mathit" style={{marginRight: '0.03148em'}}>k</span><span className="mopen">(</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span><span className="mbin">−</span><span className="mord mathrm">1</span><span className="mclose">)</span></span></span></span></p>
+                <p>And then:</p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><msup><mo>)</mo><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup></mrow><annotation encoding="application/x-tex">(message^{'{'}pubKey{'}'})^{'{'}priKey{'}'} </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.0991079999999998em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mclose"><span className="mclose">)</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8413309999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span></span></span></span></p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>=</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>⋅</mo><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup></mrow><annotation encoding="application/x-tex">=message^{'{'}pubKey \cdot priKey{'}'} </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.043548em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mrel">=</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span><span className="mbin mtight">⋅</span><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span></span></span></span></p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>=</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>⋅</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>⋅</mo><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">=message \cdot message^{'{'}pubKey \cdot priKey-1{'}'} </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.043548em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mrel">=</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mbin">⋅</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span><span className="mbin mtight">⋅</span><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span><span className="mbin mtight">−</span><span className="mord mathrm mtight">1</span></span></span></span></span></span></span></span></span></span></span></span></p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>=</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>⋅</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>h</mi><mo>(</mo><mi>p</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow></msup></mrow><annotation encoding="application/x-tex">=message \cdot message^{'{'}h(p-1){'}'} </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8879999999999999em'}} /><span className="strut bottom" style={{height: '1.0824399999999998em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mrel">=</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mbin">⋅</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8879999999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">h</span><span className="mopen mtight">(</span><span className="mord mathit mtight">p</span><span className="mbin mtight">−</span><span className="mord mathrm mtight">1</span><span className="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span></span></p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>=</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>⋅</mo><mo>(</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><msup><mo>)</mo><mrow><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">=message \cdot (message^{'{'}p-1{'}'})^{'{'}h{'}'} </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.849108em'}} /><span className="strut bottom" style={{height: '1.099108em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mrel">=</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mbin">⋅</span><span className="mopen">(</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8141079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mbin mtight">−</span><span className="mord mathrm mtight">1</span></span></span></span></span></span></span></span></span><span className="mclose"><span className="mclose">)</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.849108em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">h</span></span></span></span></span></span></span></span></span></span></span></span></p>
+                <p>Fermat's little theorem is: <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>≡</mo><mn>1</mn><mo><mo>mod</mo><mspace width="0.333333em" /><mi>p</mi></mo></mrow><annotation encoding="application/x-tex">message^{'{'}p-1{'}'}\equiv 1 \mod p</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8141079999999999em'}} /><span className="strut bottom" style={{height: '1.008548em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8141079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mbin mtight">−</span><span className="mord mathrm mtight">1</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathrm">1</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">p</span></span></span></span></span> if <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span></span></span></span> does not divide <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">message</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span></span></span></span>.  If <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>≡</mo><mn>0</mn><mo><mo>mod</mo><mspace width="0.333333em" /><mi>p</mi></mo></mrow><annotation encoding="application/x-tex">message \equiv 0 \mod p</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.69444em'}} /><span className="strut bottom" style={{height: '0.8888799999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mrel">≡</span><span className="mord mathrm">0</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">p</span></span></span></span></span> then <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>q</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>p</mi></mo></mrow><annotation encoding="application/x-tex">message^{'{'}pq{'}'} \equiv message \mod p</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.69444em'}} /><span className="strut bottom" style={{height: '0.8888799999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.664392em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>q</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">p</span></span></span></span></span>
+                Otherwise:</p>
+                <p><span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>⋅</mo><mo>(</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mo>−</mo><mn>1</mn></mrow></msup><msup><mo>)</mo><mrow><mi>h</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo>⋅</mo><msup><mn>1</mn><mrow><mi>h</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>p</mi></mo></mrow><annotation encoding="application/x-tex">message \cdot (message^{'{'}p-1{'}'})^{'{'}h{'}'} \equiv message \cdot 1^{'{'}h{'}'} \equiv message \mod p</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.849108em'}} /><span className="strut bottom" style={{height: '1.099108em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mbin">⋅</span><span className="mopen">(</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8141079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mbin mtight">−</span><span className="mord mathrm mtight">1</span></span></span></span></span></span></span></span></span><span className="mclose"><span className="mclose">)</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.849108em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">h</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span className="mbin">⋅</span><span className="mord"><span className="mord mathrm">1</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.849108em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">h</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">p</span></span></span></span></span></p>
+                <p>If we do the same steps for <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span></span></span></span>, we show, <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><msup><mi>e</mi><mrow><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><msup><mo>)</mo><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow></msup><mo>≡</mo><mi>m</mi><mi>e</mi><mi>s</mi><mi>s</mi><mi>a</mi><mi>g</mi><mi>e</mi><mo><mo>mod</mo><mspace width="0.333333em" /><mi>p</mi><mo>⋅</mo><mi>q</mi></mo></mrow><annotation encoding="application/x-tex">(message ^ {'{'}pubKey{'}'}) ^ {'{'}priKey{'}'} \equiv message \mod {'{'}p \cdot q{'}'}</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.8491079999999999em'}} /><span className="strut bottom" style={{height: '1.0991079999999998em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8491079999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight">u</span><span className="mord mathit mtight">b</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mclose"><span className="mclose">)</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.8413309999999999em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">p</span><span className="mord mathit mtight" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit mtight">i</span><span className="mord mathit mtight" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit mtight">e</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mrel">≡</span><span className="mord mathit">m</span><span className="mord mathit">e</span><span className="mord mathit">s</span><span className="mord mathit">s</span><span className="mord mathit">a</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>g</span><span className="mord mathit">e</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathit"><span className="mspace sixmuspace" /><span className="mord mathit">p</span></span><span className="mbin">⋅</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>q</span></span></span></span> This is, why RSA works.</p>
+                
+                <h4>Trivial zero knowledge Proof</h4>
+                <p>RSA fits  <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>E</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>⋅</mo><mi>E</mi><mo>(</mo><mi>y</mi><mo>)</mo><mo>=</mo><msup><mi>x</mi><mi>e</mi></msup><mo>⋅</mo><msup><mi>y</mi><mi>e</mi></msup><mo>=</mo><msup><mi>e</mi><mrow><mi>x</mi><mi>y</mi></mrow></msup><mo>=</mo><mi>E</mi><mo>(</mo><mi>x</mi><mi>y</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">E(x) \cdot E(y)=x^e \cdot y^e=e^{'{'}xy{'}'}=E(xy)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathit">x</span><span className="mclose">)</span><span className="mbin">⋅</span><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mclose">)</span><span className="mrel">=</span><span className="mord"><span className="mord mathit">x</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.664392em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mathit mtight">e</span></span></span></span></span></span></span></span><span className="mbin">⋅</span><span className="mord"><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.664392em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mathit mtight">e</span></span></span></span></span></span></span></span><span className="mrel">=</span><span className="mord"><span className="mord mathit">e</span><span className="msupsub"><span className="vlist-t"><span className="vlist-r"><span className="vlist" style={{height: '0.664392em'}}><span style={{top: '-3.063em', marginRight: '0.05em'}}><span className="pstrut" style={{height: '2.7em'}} /><span className="sizing reset-size6 size3 mtight"><span className="mord mtight"><span className="mord mathit mtight">x</span><span className="mord mathit mtight" style={{marginRight: '0.03588em'}}>y</span></span></span></span></span></span></span></span></span><span className="mrel">=</span><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathit">x</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mclose">)</span></span></span></span>
+                That means we can prove, if <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>⋅</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x \cdot y</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.44445em'}} /><span className="strut bottom" style={{height: '0.63889em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">x</span><span className="mbin">⋅</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span> calculated well, without knowing x or y.</p>
+                <p>In our example, if we use <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>=</mo><mn>1</mn><mn>2</mn></mrow><annotation encoding="application/x-tex">x=12</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.64444em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathit">x</span><span className="mrel">=</span><span className="mord mathrm">1</span><span className="mord mathrm">2</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>y</mi><mo>=</mo><mn>2</mn><mn>4</mn></mrow><annotation encoding="application/x-tex">y=24</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.8388800000000001em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mrel">=</span><span className="mord mathrm">2</span><span className="mord mathrm">4</span></span></span></span>, then we get <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>2</mn><mo>⋅</mo><mn>2</mn><mn>4</mn><mo>=</mo><mn>2</mn><mn>8</mn><mn>8</mn></mrow><annotation encoding="application/x-tex">12 \cdot 24=288</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.64444em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathrm">1</span><span className="mord mathrm">2</span><span className="mbin">⋅</span><span className="mord mathrm">2</span><span className="mord mathrm">4</span><span className="mrel">=</span><span className="mord mathrm">2</span><span className="mord mathrm">8</span><span className="mord mathrm">8</span></span></span></span>  for the output and we get <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>E</mi><mo>(</mo><mn>1</mn><mn>2</mn><mo>)</mo><mo>⋅</mo><mi>E</mi><mo>(</mo><mn>2</mn><mn>4</mn><mo>)</mo><mo>≡</mo><mi>E</mi><mo>(</mo><mn>2</mn><mn>8</mn><mn>8</mn><mo>)</mo><mo>≡</mo><mn>6</mn><mn>0</mn><mn>8</mn><mn>2</mn><mn>2</mn><mn>3</mn><mn>6</mn><mn>4</mn><mo><mo>mod</mo><mspace width="0.333333em" /><mn>6</mn></mo><mn>3</mn><mn>2</mn><mn>6</mn><mn>4</mn><mn>0</mn><mn>2</mn><mn>9</mn></mrow><annotation encoding="application/x-tex">E(12) \cdot E(24) \equiv E(288) \equiv 60822364  \mod 63264029 </annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathrm">1</span><span className="mord mathrm">2</span><span className="mclose">)</span><span className="mbin">⋅</span><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathrm">2</span><span className="mord mathrm">4</span><span className="mclose">)</span><span className="mrel">≡</span><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathrm">2</span><span className="mord mathrm">8</span><span className="mord mathrm">8</span><span className="mclose">)</span><span className="mrel">≡</span><span className="mord mathrm">6</span><span className="mord mathrm">0</span><span className="mord mathrm">8</span><span className="mord mathrm">2</span><span className="mord mathrm">2</span><span className="mord mathrm">3</span><span className="mord mathrm">6</span><span className="mord mathrm">4</span><span><span className="mspace twelvemuspace" />m</span>od<span className="mord mathrm"><span className="mspace sixmuspace" /><span className="mord mathrm">6</span></span><span className="mord mathrm">3</span><span className="mord mathrm">2</span><span className="mord mathrm">6</span><span className="mord mathrm">4</span><span className="mord mathrm">0</span><span className="mord mathrm">2</span><span className="mord mathrm">9</span></span></span></span> with same <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mo>(</mo><mi>p</mi><mi>u</mi><mi>b</mi><mi>K</mi><mi>e</mi><mi>y</mi><mo separator="true">,</mo><mi>n</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">(pubKey,n)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mopen">(</span><span className="mord mathit">p</span><span className="mord mathit">u</span><span className="mord mathit">b</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span><span className="mpunct">,</span><span className="mord mathit">n</span><span className="mclose">)</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>K</mi><mi>e</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">priKey</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.68333em'}} /><span className="strut bottom" style={{height: '0.8777699999999999em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit">p</span><span className="mord mathit" style={{marginRight: '0.02778em'}}>r</span><span className="mord mathit">i</span><span className="mord mathit" style={{marginRight: '0.07153em'}}>K</span><span className="mord mathit">e</span><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span> like in the above section. So if we give someone <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>E</mi><mo>(</mo><mn>1</mn><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">E(12)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathrm">1</span><span className="mord mathrm">2</span><span className="mclose">)</span></span></span></span>, <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>E</mi><mo>(</mo><mn>2</mn><mn>4</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">E(24)</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.75em'}} /><span className="strut bottom" style={{height: '1em', verticalAlign: '-0.25em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.05764em'}}>E</span><span className="mopen">(</span><span className="mord mathrm">2</span><span className="mord mathrm">4</span><span className="mclose">)</span></span></span></span> and our output <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mn>2</mn><mn>8</mn><mn>8</mn></mrow><annotation encoding="application/x-tex">288</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.64444em'}} /><span className="strut bottom" style={{height: '0.64444em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathrm">2</span><span className="mord mathrm">8</span><span className="mord mathrm">8</span></span></span></span>, he can verify, if the calculation is done well, without knowing <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.43056em', verticalAlign: '0em'}} /><span className="base"><span className="mord mathit">x</span></span></span></span> and <span className="katex"><span className="katex-mathml"><math><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span className="katex-html" aria-hidden="true"><span className="strut" style={{height: '0.43056em'}} /><span className="strut bottom" style={{height: '0.625em', verticalAlign: '-0.19444em'}} /><span className="base"><span className="mord mathit" style={{marginRight: '0.03588em'}}>y</span></span></span></span>.</p>
+                <p>Another trivial example are digital Signatures with RSA. They are zero-knowledge proofs, because, you are proving, that you have a private key, which is the pair to the public key, without giving any information about your private key. </p>
+                
+                <h4>Cryptographic hash functions</h4>
+                <p>Such a hash function:</p>
+                <ul>
+                    <li>converts an input, a.k.a. the message, into an output, a.k.a the hash</li>
+                    <li>does the conversion in a reasonable amount of time</li>
+                    <li>is such that it is practically impossible to re-generate the message out of the hash</li>
+                    <li>is such that the tiniest change in the message, changes the hash beyond recognition</li>
+                    <li>is such that it is practically impossible to find 2 different messages with the same hash</li>
+                </ul>
+                <p>With such a function, you can:</p>
+                <ul>
+                    <li> prove that you have a message without disclosing the content of the message, for instance:
+                        <ul>
+                            <li>to prove you know your password</li>
+                            <li>to prove you previously wrote a message</li>
+                        </ul>
+                    </li>
+                    <li>rest assured the message was not altered</li>
+                    <li>index your messages</li>
+                </ul>
+                <p>MD5 is such a function:</p>
+                <pre><code className="hljs bash">{"\n"}$ echo "The quick brown fox jumps over the lazy dog" | md5{"\n"}37c4b87edffc5d198ff5a185cee7ee09{"\n"}</code></pre>
+                <p>On Linux, it is <code className="hljs hl-inline">md5sum</code>. Now let's introduce a typo:</p>
+                <pre><code className="hljs bash">{"\n"}$ echo "The quick brown fox jump over the lazy dog" | md5{"\n"}4ba496f4eec6ca17253cf8b7129e43be{"\n"}</code></pre>
+                <p>Notice how the 2 hashes have nothing in common.</p>
+                <p><code className="hljs hl-inline">MD5</code> is no longer considered a hard-to-crack hash function. Bitcoin uses <code className="hljs hl-inline">SHA-256</code>. Ethereum uses <code className="hljs hl-inline">Keccak-256</code>and <code className="hljs hl-inline">Keccak-512</code>.</p>
+                <p>It is possible to index content by its hash, in essence creating a hashtable. If you have used IPFS or BitTorrent's magnet links, among others, then you have used a hashtable.</p>
+                
+                <h3>Digital Certificates</h3>
+                <p>Digital certificates are used (among other things) to prove an identity. They are given by a recognised Certification Authority(CA).  A widespread procedure is the public key certificate. It proves the ownership of a public key. We will describe below the standard X.509.</p>
+                <p>The standard X.509 is defined by the Telecommunication Standardization Sector(ITU-T) of the International Telecommunication Union(ITU).<a href="https://en.wikipedia.org/wiki/X.509">[1]</a> It offers format and semantics for public key certificates. <a href="https://www.ietf.org/rfc/rfc5280.txt">X.509</a> is profiled in the formal language ASN.1. Common use cases are validation of documents and securing of communication. For an example, X.509 is used in TLS/SSL. Its origin is in the X.500 standard from year 1988. Since version 3, X.509 enables flexible topologies, like bridges and meshes. Invalid certificates are listed in certificate revocation lists. (CRLs) CRL is vulnerable against DOS attacks.</p>
+                <p>A X.509 certificate contains information such as version number, serial number, signature algorithm, validity period, subject name, public key algorithm, subject public key, certificate signature algorithm, certificate signature and extensions. An extension has a type, a corresponding value and a critical flag. Non-critical extensions are only informational.</p>
+                
+                <h4>Signature</h4>
+                <p>The concept of digital signatures is simple. If a given message is first hashed and then encrypted by a private key, one can verify the signature by decryption with corresponding public key. We need to hash the message to avoid the creation of signatures by mixing the messages and corresponding signatures. (See RSA chapter) This way, we know, that the sender has the private key to the given public key. However, this is not truly an identification. Here comes the CA. The CA signs a certificate to prove the identity of the owner of a public key.  The certificate includes as described above the subject name. This must be verified by the CA. So, the identity is given, if one can verify the CA’s signature and trust the CA.</p>
+                <p>Here's a Hyperledger Fabric example certificate:
+                <img src="https://s3-eu-west-1.amazonaws.com/b9-academy-assets/course-assets/HLF-0/cert.png" /></p>
+                
+                <h3>Learn More</h3>
+                <ul>
+                    <li><a href="https://en.wikipedia.org/wiki/Zero-knowledge_proof">Zero-knowledge proof</a></li>
+                    <li><a href="https://wiki.openssl.org/index.php/Command_Line_Elliptic_Curve_Operations">EC Operations</a></li>
+                    <li><a href="http://osxdaily.com/2012/01/30/encrypt-and-decrypt-files-with-openssl/">Encrypt and Decrypt</a></li>
+                    <li><a href="https://gist.github.com/ezimuel/3cb601853db6ebc4ee49">Sign and verify</a></li>
+                </ul>
             </div>
         )
     }

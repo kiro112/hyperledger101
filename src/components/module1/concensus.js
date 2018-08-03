@@ -4,7 +4,7 @@ class Concensus extends Component {
 
     render () {
         return (
-            <div className="course-content">
+            <div>
                 <h2>Consensus</h2>
                 <p>In a distributed network without authorities, we need a process to reach consensus about what is to be considered as the truth; this is referred to as distributed consensus. An identified problem in distributed computing, which is provably unsolvable but can nonetheless be mitigated, is how to reach consensus in a hierarchy-free, permission-less and failure-prone network.</p>
                 <p>This problem is commonly known as the Byzantine generals&#39; problem. Mitigation strategies are known as Byzantine fault tolerance. In the traditional description of the problem, generals, whose armies are spread around a target city, need to reach consensus on a time to attack. To achieve this, they can only rely on unsecured communication channels, whereby, for instance, a lack of acknowledgement can either be caused by a failure to deliver a message, by a dead general or by a failure to deliver the acknowledgment.</p>

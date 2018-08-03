@@ -4,7 +4,7 @@ class ChainOfBlocks extends Component {
 
     render () {
         return (
-            <div className="course-content">
+            <div>
                 <h2>Blockchain definitions</h2>
 
                 <h3>What</h3>

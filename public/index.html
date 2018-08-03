@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
+  <head dir="ltr">
+    <!-- <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#000000"> -->
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json"> -->
+    <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"> -->
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -19,14 +19,145 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Hyperledger Fabric</title>
+    <!-- <title>Hyperledger Fabric</title> -->
 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>B9lab-Certified Hyperledger Fabric Developer Course - July | B9lab Academy</title>
+
+    
+    <script type="text/javascript" src="/static/js/i18n/en/djangojs.b28203373cc1.js"></script>
+    <link rel="icon" type="image/x-icon" href="/static/edx-b9lab-theme/images/favicon.e0cf15fd2e28.ico" />
+    <link href="/static/edx-b9lab-theme/css/lms-style-vendor.4ccaa7f84216.css" rel="stylesheet" type="text/css" />
+    <link href="/static/edx-b9lab-theme/css/lms-main-v1.de9c074d355a.css" rel="stylesheet" type="text/css" />
+
+
+    <script type="text/javascript" src="/static/edx-b9lab-theme/js/lms-main_vendor.9ffa92b26c4f.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/edx-b9lab-theme/js/lms-application.596021cdc57d.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="/static/lms/js/require-config.cd72e66c1a3e.js"></script>
+    <script type="text/javascript" src="/static/edx-b9lab-theme/js/lms-modules.95e020694261.js" charset="utf-8"></script>
+
+    <link href="/static/edx-b9lab-theme/css/lms-style-course-vendor.60799ae7d9f8.css" rel="stylesheet" type="text/css" />
+    <link href="/static/edx-b9lab-theme/css/lms-course.617ceac4dd9c.css" rel="stylesheet" type="text/css" />
+
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+    
+    
+    <!-- bootstrap! -->
+    <!-- local reference for offline testing only -->
+    <!-- <link rel="stylesheet" href="/static/edx-b9lab-theme/css/bootstrap.e60e9bcfcac0.css" > -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.js"></script>
+
+    <!-- Ednote download and host highlight.js locally? -->     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/atom-one-dark.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.2/jquery.matchHeight-min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <!-- Ednote by isy: check if this triggers on ready, otherwise needs to be moved -->
+
+    <script src="/static/edx-b9lab-theme/js/cookiebanner.aa9e72239da4.js" id="cookiebanner"
+      data-link="#f89820"
+      data-message="We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies. Find out more about how we use cookies in our"
+      data-linkmsg="Privacy Policy."
+      data-moreinfo="/privacy">
+    </script>
+
+    <script src="/static/edx-b9lab-theme/js/academy.e83c874e8455.js"> </script>
+    <script>
+      $(document).ready(function(){
+        // General functions
+        $('.eq-height').matchHeight();
+    
+        // Academy js init
+        Academy.settings.enable_debug_log = false;
+        
+        Academy.init();
+      })
+    </script>
+    
+    <style>
+      .info-headline {
+        font-size: 24px !important;
+        margin-top: 60px !important;
+      }
+    </style>
+    
   </head>
-  <body>
+  <body class="ltr view-in-course view-course-info lang_en">
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
+
+
+    <div class="window-wrap" dir="ltr">
+      
+      <header class="global" aria-label="Global Navigation">
+        <nav id="secondary-nav" class="container-fluid">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 navbar navbar-default">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#secondary-nav-items">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/">
+                    
+                  <img class="b9lab-academy-logo" src="/static/edx-b9lab-theme/images/b9lab-academy-logo.1e555680be8e.svg" alt="Home Page">
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+
+      <script async>
+        $(function(){
+          var button = document.getElementById("dropdown");
+      
+          $(button).click(function(){
+            var menu = document.getElementById("dropdown-menu");
+      
+            var caret=$(button).children('.caret');
+      
+            if (menu.style.display !== "inline") {
+                menu.style.display = "inline";
+                $(caret).hide();
+            }
+            else {
+              menu.style.display = "none";
+              $(caret).show();
+            }
+          });
+        })
+      </script>
+
+      <div class="content-wrapper" id="root"></div>
+
+    </div>
+
+
+
+
+    <!-- <div id="root"></div> -->
+
+
+
+
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

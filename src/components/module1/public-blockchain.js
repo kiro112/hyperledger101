@@ -4,7 +4,7 @@ class PublicBlockchain extends Component {
 
     render () {
         return (
-            <div className="course-content">
+            <div>
                 <h2>A Brief History of Blockchain</h2>
                 <p>In order to understand whether blockchain technology is a good fit for your project it is important to understand where it comes from and who is driving it.</p>
                 <p><img src="https://s3-eu-west-1.amazonaws.com/b9-academy-assets/course-assets/HLF-0/timeline.png" /></p>

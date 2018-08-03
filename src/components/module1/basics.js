@@ -4,7 +4,7 @@ class Basics extends Component {
 
     render () {
         return (
-            <div className="course-content">
+            <div>
                 <h2>Data &amp; Databases</h2>
 
                 <p>To put blockchain into context we are going all the way back to the advent of computing. 
@@ -172,15 +172,15 @@ class Basics extends Component {
                     <li>The server receives the request and queries its inventory database for the data requested, e.g. <code class='hljs hl-inline'>SELECT * FROM inventory.products WHERE id=2311;</code>.</li>
                     <li>Server forms a JSON response, the <em>document</em>, from the data, e.g. 
                         <code class='hljs hl-inline'>
-                        {`
-                            {
-                                "products": [
+                        {
+                            JSON.stringify({
+                                products: [
                                     2311: {
-                                        "name": Raw Linseed Oil
+                                        name: 'Raw Linseed Oil'
                                     }
                                 ]
-                            }
-                        `}
+                            }, null, 4)
+                        }
                         </code>.
                     </li>
                     <li>Server sends the document to the client, which is waiting for the response.</li>

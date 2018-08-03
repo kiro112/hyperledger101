@@ -1,50 +1,40 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {  Container, Row, Col } from 'reactstrap';
 
-import logo from 'assets/edx-b9lab-theme/images/b9lab-academy-logo.1e555680be8e.svg';
-
-import '../styles/header.css'
 
 class Header extends Component {
 
     render () {
         return (
-            <header>
-                <div className="header-container" >
-                    <Container className="header-grid" >
-                        <Row>
-                            <Col>
-                                <img src={ logo } className="header-logo" alt="header-logo" />
-                            </Col>
-                        </Row>
-                    </Container>
+            <div>
+                <div className="container-fluid" id="course-title-header">
+                <img src="/asset-v1:B9lab+HLF-12+2018-07+type@asset+block@asset-v1_B9lab_HLF-11_2018-06_type_asset_block_hlf-logo-03-01.png" className="hidden" id="course-image" hidden />
+                <div className="container">
+                    <div className="row">
+                    <h1><span className="provider">B9lab-Certified Hyperledger Fabric Developer Course - July</span></h1>
+                    <div className="hidden" style={{display: 'none'}} id="__course_number__">HLF-12</div>
+                    </div>
                 </div>
-                
-                <Container>
-                    <Row>
-                        <Col>
-                            <h2 className="header-title">B9lab-Certified Hyperledger Fabric Developer Course - July</h2>
-                        </Col>
-                    </Row>
-                </Container>
-
-                <Container className="header-nav-container">
-                    <Row>
-                        <Col>
-                            <ol className="header-nav-ol" >
-                                <li className="header-nav-li" >
+                </div>
+                <div className="container">
+                <div className="row">
+                    <nav className="info wrapper-course-material col-md-12" aria-label="Course Material">
+                    <div className="course-material">
+                        <ol className="tabs course-tabs">
+                            <li className="tab">
+                                <a className="active">
                                     <Link className="header-nav-link" to='/'>Home</Link>
-                                </li>
-                                <li className="header-nav-li" >
-                                    <Link className="header-nav-link" to='/courses'>Courses</Link>
-                                </li>
-                                {/* <li><Link to='/schedule'>Schedule</Link></li> */}
-                            </ol>
-                        </Col>
-                    </Row>
-                </Container>
-            </header>
+                                </a>
+                            </li>
+                            <li className="tab">
+                                <Link className="header-nav-link" to='/courses'>Courses</Link>
+                            </li>
+                        </ol>
+                    </div>
+                    </nav>
+                </div>
+                </div>
+            </div>
         )
     }
 
