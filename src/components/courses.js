@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Route, Switch, Link, HashRouter } from 'react-router-dom'
-import { Container, Row, Col } from 'reactstrap';
+import { Route } from 'react-router-dom'
+
+import './../styles/course.css';
 
 
 import Sidenav from './sidenav';

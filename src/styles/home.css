@@ -1,21 +1,8 @@
-.home-content {
-    margin: 10px;
-}
-
-
-.syllabus {
-    padding-top: 25px;
-}
-
 .handouts-header {
-    font-size: 1.2rem;
+    padding-top: 20px;
 }
 
 .handouts h4 {
-    font-size: 13px;
-    font-weight: 400;
-}
-
-.handouts font {
-    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

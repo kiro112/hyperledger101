@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'reactstrap';
 
-import '../styles/home.css'
+import './../styles/home.css'
 
 class Home extends Component {
 

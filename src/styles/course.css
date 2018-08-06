@@ -1,0 +1,16 @@
+.course-content {
+    border: 1px solid #e6e6e6;
+}
+
+.b9-info, .b9-tip, .b9-remember, .b9-warning {
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: block;
+    background-color: #EDEDED;
+    border-radius: 7px;
+    border-color: #e8e8e8;
+}
+
+.hljs {
+    font-size: 14px;
+}
