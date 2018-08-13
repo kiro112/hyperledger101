@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/kiro112/hyperledger101/issues"
   },
-  "homepage": "https://github.com/kiro112/hyperledger101#readme",
+  "homepage": "./",
   "dependencies": {
     "@getable/lato": "^1.0.1",
     "bootstrap": "^4.1.1",

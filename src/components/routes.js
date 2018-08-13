@@ -37,7 +37,14 @@ import mod4_AccessControl from './module4/access-control';
 import mod4_ChaincodeInteraction from './module4/chaincode-interaction';
 import mod4_GoControlStructure from './module4/go-control-structures';
 
-
+import mod5_Intro from './module5/intro';
+import mod5_NodeJS from './module5/nodeJS';
+import mod5_ProducerApp from './module5/producer-app';
+import mod5_MarketApp from './module5/market-app';
+import mod5_next from './module5/next';
+import mod5_JavaSdk from './module5/java-sdk';
+import mod5_GoClientSdk from './module5/go-client-sdk';
+import mod5_GoArrays from './module5/go-arrays';
 
 const routes = [
     {
@@ -218,6 +225,52 @@ const routes = [
                 label: 'Go Control Structure',
                 component: mod4_GoControlStructure
             },
+        ]
+    },
+
+    {
+        module: 'Clients',
+        menus: [
+            {
+                to: '/courses/clients/intro',
+                label: 'Introduction',
+                component: mod5_Intro
+            },
+            {
+                to: '/courses/clients/nodejs',
+                label: 'NodeJS',
+                component: mod5_NodeJS
+            },
+            {
+                to: '/courses/clients/producer-app',
+                label: 'ProducerApp',
+                component: mod5_ProducerApp
+            },
+            {
+                to: '/courses/clients/market-app',
+                label: 'MarketApp',
+                component: mod5_MarketApp
+            },
+            {
+                to: '/courses/clients/next',
+                label: 'Next',
+                component: mod5_next
+            },
+            {
+                to: '/courses/clients/java-sdk',
+                label: 'Java SDK',
+                component: mod5_JavaSdk
+            },
+            {
+                to: '/courses/clients/go-client-sdk',
+                label: 'Go Client SDK',
+                component: mod5_GoClientSdk
+            },
+            {
+                to: '/courses/clients/go-arrays',
+                label: 'Go Arrays',
+                component: mod5_GoArrays
+            },           
         ]
     },
 ];
