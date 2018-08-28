@@ -7,7 +7,6 @@ import mod1_Fundamentals from './module1/fundamentals';
 import mod1_Metamask from './module1/metamask';
 import mod1_GoInstall from './module1/go-install';
 
-
 import mod2_ManagedBlockchains from './module2/managed-blockchains';
 import mod2_Hyperledger from './module2/hyperledger';
 import mod2_FabricDefinitions from './module2/fabric-definitions';
@@ -17,8 +16,6 @@ import mod2_UseCases from './module2/use-cases';
 import mod2_Go from './module2/go';
 import mod2_PopQuiz from './module2/pop-quiz';
 
-
-
 import mod3_Intro from './module3/intro';
 import mod3_Examples from './module3/examples';
 import mod3_Cli from './module3/cli';
@@ -26,7 +23,6 @@ import mod3_Devmode from './module3/devmode';
 import mod3_GoInterfaces from './module3/go-interfaces';
 import mod3_FirstChaincode from './module3/first-chaincode';
 import mod3_PopQuiz from './module3/pop-quiz';
-
 
 import mod4_Intro from './module4/intro';
 import mod4_UseCase from './module4/use-case';
@@ -45,6 +41,17 @@ import mod5_next from './module5/next';
 import mod5_JavaSdk from './module5/java-sdk';
 import mod5_GoClientSdk from './module5/go-client-sdk';
 import mod5_GoArrays from './module5/go-arrays';
+
+import mod6_facricCa from './module6/fabric-ca';
+import mod6_msp from './module6/msp';
+import mod6_pcxchg from './module6/pcxchg';
+import mod6_ProducerApp from './module6/producer-app';
+import mod6_GoPkg from './module6/go-packages';
+
+import mod7_Composer from './module7/composer';
+import mod7_Orderer from './module7/orderer';
+import mod7_Chaintool from './module7/chaintool';
+import mod7_GoConcurrency from './module7/go-concurrency';
 
 const routes = [
     {
@@ -273,6 +280,63 @@ const routes = [
             },           
         ]
     },
+
+    {
+        module: 'Certificate Authority',
+        menus: [
+            {
+                to: '/courses/certificate-authority/fabric-ca',
+                label: 'Fabric CA',
+                component: mod6_facricCa
+            },
+            {
+                to: '/courses/certificate-authority/msp',
+                label: 'MSP',
+                component: mod6_msp
+            },
+            {
+                to: '/courses/certificate-authority/pcxchg',
+                label: 'PCXCHG',
+                component: mod6_pcxchg
+            },
+            {
+                to: '/courses/certificate-authority/producer-app',
+                label: 'Producer App',
+                component: mod6_ProducerApp
+            },
+            {
+                to: '/courses/certificate-authority/go-packages',
+                label: 'Go Packages',
+                component: mod6_GoPkg
+            },
+        ]
+    },
+
+    {
+        module: 'Frameworks',
+        menus: [
+            {
+                to: '/courses/frameworks/composer',
+                label: 'Composer',
+                component: mod7_Composer
+            },
+            {
+                to: '/courses/frameworks/orderer',
+                label: 'Orderer',
+                component: mod7_Orderer
+            },
+            {
+                to: '/courses/frameworks/chaintool',
+                label: 'Chaintool',
+                component: mod7_Chaintool
+            },
+            {
+                to: '/courses/frameworks/go-concurrency',
+                label: 'Go Concurrency',
+                component: mod7_GoConcurrency
+            },
+        ]
+    }
 ];
 
 

@@ -22,3 +22,5 @@ yarn-error.log*
 
 .gz
 .tar
+
+hyperledger.tar.gz
