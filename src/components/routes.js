@@ -53,6 +53,11 @@ import mod7_Orderer from './module7/orderer';
 import mod7_Chaintool from './module7/chaintool';
 import mod7_GoConcurrency from './module7/go-concurrency';
 
+import mod8_intro from './module8/introduction';
+import mod8_neutrality from './module8/neutrality';
+import mod8_decentalisation from './module8/decentralisation';
+import mod8_InClosing from './module8/in-closing';
+
 const routes = [
     {
         module: 'Blockchain',
@@ -335,6 +340,32 @@ const routes = [
                 label: 'Go Concurrency',
                 component: mod7_GoConcurrency
             },
+        ]
+    },
+
+    {
+        module: 'Ethics',
+        menus: [
+            {
+                to: '/courses/ethics/introduction',
+                label: 'Introduction',
+                component: mod8_intro
+            },
+            {
+                to: '/courses/ethics/neutrality',
+                label: 'Neutrality',
+                component: mod8_neutrality
+            },
+            {
+                to: '/courses/ethics/decentralisation',
+                label: 'Decentralisation',
+                component: mod8_decentalisation
+            },
+            {
+                to: '/courses/ethics/in-closing',
+                label: 'In Closing',
+                component: mod8_InClosing
+            },        
         ]
     }
 ];
